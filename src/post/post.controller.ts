@@ -2,11 +2,15 @@ import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
 import { PostModel } from './post.model';
 
+import { IsNotEmpty } from 'class-validator'
+
 // 传入参数类型限制,一般抽象成单独一个文件
 class CreatedPostDto{
   @ApiProperty({description:'文章标题',example:'文章标题1'})
+  @IsNotEmpty({message:'文章标题不能为空'})
   title: string
   @ApiProperty({description:'文章内容',example:'文章内容1'})
+  @IsNotEmpty({message:'文章内容不能为空'})
   content: string
 }
 

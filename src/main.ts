@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 
 // import { prop, getModelForClass } from '@typegoose/typegoose';
 import * as mongoose from 'mongoose';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -14,6 +15,8 @@ async function bootstrap() {
   })
 
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe())  // 管道（类似中间件）
 
   const options = new DocumentBuilder()
     .setTitle('Nest博客api')
