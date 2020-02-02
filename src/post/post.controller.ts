@@ -4,9 +4,9 @@ import { PostModel } from './post.model';
 
 // 传入参数类型限制,一般抽象成单独一个文件
 class CreatedPostDto{
-  @ApiProperty({description:'文章标题'})
+  @ApiProperty({description:'文章标题',example:'文章标题1'})
   title: string
-  @ApiProperty({description:'文章内容'})
+  @ApiProperty({description:'文章内容',example:'文章内容1'})
   content: string
 }
 
@@ -22,33 +22,35 @@ export class PostController {
 
   @Post()
   @ApiOperation({summary:'创建博客'})
-  created (@Body() body:CreatedPostDto) {
-    return body
+  async create (@Body() createdPostDto:CreatedPostDto) {
+    await PostModel.create(createdPostDto)
+    return {
+      msg:'创建成功',
+      data:createdPostDto
+    }
   }
 
   @Get(':id')
   @ApiOperation({summary:'博客详情'})
-  detail(@Param('id') id:string){
-    return {
-      id,
-      title:'标题1'
-    }
+  async detail(@Param('id') id:string){
+    return PostModel.findById(id)
   }
   
   @Put(':id')
   @ApiOperation({summary:'编辑博客'})
-  update(@Param('id') id:string,@Body() body:CreatedPostDto){
+  async update(@Param('id') id:string,@Body() updateDto:CreatedPostDto){
+    await PostModel.findByIdAndUpdate(id,updateDto)
     return {
-      id,
-      ...body
+      msg:'修改成功',
+      data:updateDto
     }
   }
   
   @Delete(':id')
   @ApiOperation({summary:'删除博客'})
-  remove(@Param('id') id:string){
+  async remove(@Param('id') id:string){
+    await PostModel.findByIdAndDelete(id)
     return {
-      id,
       msg:`成功删除${id}博客`
     }
   }
