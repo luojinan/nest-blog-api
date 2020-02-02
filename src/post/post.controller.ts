@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
+import { PostModel } from './post.model';
 
 // 传入参数类型限制,一般抽象成单独一个文件
 class CreatedPostDto{
@@ -15,14 +16,8 @@ class CreatedPostDto{
 export class PostController {
   @Get()
   @ApiOperation({summary:'显示博客列表'})
-  index(){
-    return [
-      {id:1},
-      {id:1},
-      {id:1},
-      {id:1},
-      {id:1}
-    ]
+  async index(){
+    return await PostModel.find()
   }
 
   @Post()
