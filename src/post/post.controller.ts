@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
 
 // 传入参数类型限制,一般抽象成单独一个文件
@@ -32,10 +32,29 @@ export class PostController {
   }
 
   @Get(':id')
-  detail(){
+  @ApiOperation({summary:'博客详情'})
+  detail(@Param('id') id:string){
     return {
-      id:1,
+      id,
       title:'标题1'
+    }
+  }
+  
+  @Put(':id')
+  @ApiOperation({summary:'编辑博客'})
+  update(@Param('id') id:string,@Body() body:CreatedPostDto){
+    return {
+      id,
+      ...body
+    }
+  }
+  
+  @Delete(':id')
+  @ApiOperation({summary:'删除博客'})
+  remove(@Param('id') id:string){
+    return {
+      id,
+      msg:`成功删除${id}博客`
     }
   }
 }
