@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
 import { PostModel } from './post.model';
-
+ 
 import { IsNotEmpty } from 'class-validator'
 
 // 传入参数类型限制,一般抽象成单独一个文件
@@ -15,17 +15,18 @@ class CreatedPostDto{
 }
 
 
-@Controller('post')
-@ApiTags('文章')
+@Controller('post')  // 路径(路由)
+@ApiTags('文章')    // 接口文档标题
 export class PostController {
   @Get()
-  @ApiOperation({summary:'显示博客列表'})
-  async index(){
-    return await PostModel.find()
+  @ApiOperation({summary:'显示博客列表'}) // 接口描述
+  async index(){  // 方法名，后端自用
+    return await PostModel.find() // 数据库类方法
   }
 
   @Post()
   @ApiOperation({summary:'创建博客'})
+  // 后端自用方法，参数获取前端入参，@Body/@Params 参数名:typescript数据类型/类class
   async create (@Body() createdPostDto:CreatedPostDto) {
     await PostModel.create(createdPostDto)
     return {
