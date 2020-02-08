@@ -1,21 +1,9 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
  
-import { IsNotEmpty } from 'class-validator'
 import { InjectModel } from 'nestjs-typegoose';
 
 import {Post as PostSchema} from './post.model'
-
-// 传入参数类型限制,一般抽象成单独一个文件
-class CreatedPostDto{
-  @ApiProperty({description:'文章标题',example:'文章标题1'})
-  @IsNotEmpty({message:'文章标题不能为空'})
-  title: string
-  @ApiProperty({description:'文章内容',example:'文章内容1'})
-  @IsNotEmpty({message:'文章内容不能为空'})
-  content: string
-}
-
 
 @Controller('post')  // 路径(路由)
 @ApiTags('文章')    // 接口文档标题
@@ -33,7 +21,7 @@ export class PostController {
   @Post()
   @ApiOperation({summary:'创建博客'})
   // 后端自用方法，参数获取前端入参，@Body/@Params 参数名:typescript数据类型/类class
-  async create (@Body() createdPostDto:CreatedPostDto) {
+  async create (@Body() createdPostDto:PostSchema) {
     await this.PostModel.create(createdPostDto)
     return {
       msg:'创建成功',
@@ -49,7 +37,7 @@ export class PostController {
   
   @Put(':id')
   @ApiOperation({summary:'编辑博客'})
-  async update(@Param('id') id:string,@Body() updateDto:CreatedPostDto){
+  async update(@Param('id') id:string,@Body() updateDto:PostSchema){
     await this.PostModel.findByIdAndUpdate(id,updateDto)
     return {
       msg:'修改成功',
