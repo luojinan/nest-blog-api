@@ -2,17 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
-// import { prop, getModelForClass } from '@typegoose/typegoose';
-import * as mongoose from 'mongoose';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  // 连接数据库mongoose，不使用依赖
-  mongoose.connect('mongodb://localhost/nest-blog-api',{
-    useNewUrlParser:true,
-    useFindAndModify:false,
-    useCreateIndex:true
-  })
 
   // 实例化后端服务
   const app = await NestFactory.create(AppModule);
